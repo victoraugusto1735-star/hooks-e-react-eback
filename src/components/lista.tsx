@@ -1,8 +1,12 @@
 import Item from "./Item";
 import { useContext } from "react";
-import { TarefasContext } from "../TarefasContext";
+import { TarefasContext, Tarefa } from "../TarefasContext";
 
-export default function Lista({ tarefas }) {
+type Props = {
+  tarefas: Tarefa[];
+};
+
+export default function Lista({ tarefas }: Props) {
 
   const contexto = useContext(TarefasContext);
 
@@ -12,7 +16,7 @@ export default function Lista({ tarefas }) {
 
   return (
     <ul>
-      {tarefas.map((t) => (
+      {tarefas.map((t: Tarefa) => (
         <Item
           key={t.id}
           tarefa={t}

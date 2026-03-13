@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useState, useEffect } from "react";
+import { createContext, ReactNode } from "react";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 export type Tarefa = {
   id: number;
@@ -20,22 +21,18 @@ type Props = {
 };
 
 export function TarefasProvider({ children }: Props) {
-  const [tarefas, setTarefas] = useState<Tarefa[]>([]);
 
-  // Carregar tarefas do localStorage
-  useEffect(() => {
-    const dados = localStorage.getItem("tarefas");
-    if (dados) setTarefas(JSON.parse(dados));
-  }, []);
-
-  // Salvar tarefas no localStorage
-  useEffect(() => {
-    localStorage.setItem("tarefas", JSON.stringify(tarefas));
-  }, [tarefas]);
+  const [tarefas, setTarefas] = useLocalStorage<Tarefa[]>("tarefas", []);
 
   const adicionarTarefa = (texto: string) => {
     if (!texto.trim()) return;
-    const nova: Tarefa = { id: Date.now(), texto, concluida: false };
+
+    const nova: Tarefa = {
+      id: Date.now(),
+      texto,
+      concluida: false
+    };
+
     setTarefas([...tarefas, nova]);
   };
 
